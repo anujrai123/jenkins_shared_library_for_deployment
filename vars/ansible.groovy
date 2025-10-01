@@ -1,6 +1,7 @@
-def call(String playbook, String servers, String action, String towerIp) {
+def call(String playbook, String server, String action, String ansibleServerIp) {
     sh """
-        ansible-playbook -i ${servers.replaceAll(",", " ")} ${playbook} \
-        --extra-vars "action=${action} tower_ip=${towerIp}"
+        ssh -i $SSH_KEY -o StrictHostKeyChecking=no ubuntu@${ansibleServerIp} \
+        "ansible-playbook -i '${server},' /home/ubuntu/Ansible/playbook/${playbook} --extra-vars 'action=${action}'"
     """
 }
+
